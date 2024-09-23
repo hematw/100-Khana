@@ -1,40 +1,67 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import SideBar from "../components/SideBar";
 import { Save } from "react-feather";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-interface IProfileEditForm {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  govId: number;
+interface IProfile {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  govId?: number;
+  userId?: {
+    email: string;
+  };
 }
 
 export default function Profile() {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [profileData, setProfileData] = useState<IProfile>({});
   const {
     register,
-    watch,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<IProfileEditForm>({});
+  } = useForm<IProfile>({
+    defaultValues: profileData,
+  });
 
-  const onSubmit: SubmitHandler<IProfileEditForm> = async (values) => {
-    console.log(values);
+  useEffect(() => {
+    async function getProfile() {
+      const res = await fetch("http://localhost:3000/api/v1/profile/me", {
+        credentials: "include",
+        mode: "cors",
+      });
+      const data = await res.json();
+      setProfileData({ ...data.profile, email: data.profile?.userId?.email });
+      reset({ ...data.profile, email: data.profile?.userId?.email });
+    }
+    getProfile();
+  }, [reset]);
+
+  const onSubmit: SubmitHandler<IProfile> = async (values) => {
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/api/v1/profile", {
-        method: "POST",
+      const res = await fetch("http://localhost:3000/api/v1/profile/update", {
+        method: "PUT",
+        body: JSON.stringify(values),
+        credentials: "include",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       if (res.ok) {
         setEditMode(false);
+        const data = await res.json();
+        setProfileData({ ...data.profile, email: data.profile?.userId?.email });
+        reset({ ...data.profile, email: data.profile?.userId?.email });
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -43,9 +70,10 @@ export default function Profile() {
       <div className="flex p-10 max-w-5xl m-auto">
         <SideBar image="/profile-picture.jpeg" name="John Doe" />
         <div className="ml-16 w-full">
-          <div className="">
-            <h2 className="bg-gradient bg-clip-text text-transparent text-5xl font-semibold inline drop-shadow-lg">
-              My Profile
+          <div className="flex flex-col">
+            <h2 className="bg-gradient bg-clip-text text-transparent text-5xl font-semibold inline-block drop-shadow-lg">
+              <span>My Profile</span>
+              <span className="inline-block w-full h-1 bg-gradient"></span>
             </h2>
           </div>
           {editMode ? (
@@ -160,7 +188,7 @@ export default function Profile() {
                           type="text"
                           {...register("phone", {
                             pattern: {
-                              value: /^\+93(78|73|79|77|72|74|70)\d{6}$/,
+                              value: /^\+93(78|73|79|77|72|74|70)\d{7}$/,
                               message: "Provide a valid phone number!",
                             },
                           })}
@@ -188,7 +216,7 @@ export default function Profile() {
                       </div>
                       <div>
                         <input
-                          type="text"
+                          type="number"
                           {...register("govId", {
                             required: {
                               value: true,
@@ -212,6 +240,7 @@ export default function Profile() {
                   type="gradient"
                   handleClick={() => {}}
                   icon={<Save />}
+                  disabled={isLoading}
                   className={isLoading ? "opacity-60" : ""}
                 >
                   {isLoading ? "Save..." : "Save"}
@@ -228,28 +257,38 @@ export default function Profile() {
                   <div className="flex justify-between">
                     <span className="font-medium text-sm">Full name</span>
                   </div>
-                  <p className="text-gray-500">Hematullah Waziri</p>
+                  <p className="text-gray-500">
+                    {profileData?.firstName
+                      ? `${profileData?.firstName} ${profileData?.lastName}`
+                      : "No name"}
+                  </p>
                 </li>
 
                 <li className="border-b border-gray-300 py-6">
                   <div className="flex justify-between">
                     <span className="font-medium text-sm">Email address</span>
                   </div>
-                  <p className="text-gray-500">hemat@x.com</p>
+                  <p className="text-gray-500">
+                    {profileData?.email || "No email"}
+                  </p>
                 </li>
 
                 <li className="border-b border-gray-300 py-6">
                   <div className="flex justify-between">
                     <span className="font-medium text-sm">Phone number</span>
                   </div>
-                  <p className="text-gray-500">+93 780 123 456</p>
+                  <p className="text-gray-500">
+                    {profileData?.phone || "No phone"}
+                  </p>
                 </li>
 
                 <li className="border-b border-gray-300 py-6">
                   <div className="flex justify-between">
                     <span className="font-medium text-sm">Government ID</span>
                   </div>
-                  <p className="text-gray-500">1400-14245-938</p>
+                  <p className="text-gray-500">
+                    {profileData?.govId || "No Government ID"}
+                  </p>
                 </li>
               </ul>
               <div className="flex">

@@ -6,6 +6,7 @@ interface ButtonProps {
   children: React.ReactNode;
   handleClick: () => void;
   icon?: React.ReactNode;
+  disabled?: boolean;
 }
 
 const buttonStyles = {
@@ -20,9 +21,11 @@ export default function Button({
   children,
   handleClick,
   icon,
+  disabled,
 }: ButtonProps) {
   return (
     <button
+      disabled={disabled}
       type="submit"
       onClick={handleClick}
       className={`inline-flex hover:opacity-80 place-content-center gap-2 duration-150 text-white py-2 px-4 min-w-32 text-lg mt-4 rounded-lg ${className} ${buttonStyles[type]}`}

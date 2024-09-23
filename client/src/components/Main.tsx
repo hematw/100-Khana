@@ -21,8 +21,8 @@ export default function Main() {
   return (
     <section className="max-w-[1480px] min-h-screen mx-auto my-28 p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10 place-items-center">
-        {Array.from("abcdefgh").map((_) => (
-          <Card {...info} className="min-w-[270px]" />
+        {Array.from("abcdefgh").map((_, index) => (
+          <Card {...info} className="min-w-[270px]" key={index} />
         ))}
       </div>
     </section>
