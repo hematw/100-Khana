@@ -1,25 +1,29 @@
 import mongoose from "mongoose";
 
 const ProfileSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: [true, "Please provide user ID!"],
+  },
   firstName: {
     type: String,
     required: [true, "Please provide first name!"],
   },
   lastName: {
     type: String,
-    required: [true, "Please provide first name!"],
+    required: [true, "Please provide last name!"],
   },
   profileImage: {
     type: String,
-    default: null,
   },
   phone: {
     type: String,
-    required: [true, "Please provide first name!"],
+    // required: [true, "Please provide phone number!"],
   },
-  governmentId: {
+  govId: {
     type: String,
-    required: [true, "Please provide first name!"],
+    required: [true, "Please provide government ID!"],
   },
 });
 
