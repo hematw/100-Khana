@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
-import SideBar from "../components/SideBar";
+import ProfileSideBar from "../components/ProfileSideBar";
 import { Save } from "react-feather";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -68,7 +68,7 @@ export default function Profile() {
   return (
     <section>
       <div className="flex p-10 max-w-5xl m-auto">
-        <SideBar image="/profile-picture.jpeg" name="John Doe" />
+        <ProfileSideBar image="/profile-picture.png" name={profileData.firstName || "No name"} />
         <div className="ml-16 w-full">
           <div className="flex flex-col">
             <h2 className="bg-gradient bg-clip-text text-transparent text-5xl font-semibold inline-block drop-shadow-lg">
