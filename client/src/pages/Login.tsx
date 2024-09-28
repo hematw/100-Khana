@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../axios";
+import Button from "../components/Button";
+import { AxiosError } from "axios";
 
 interface ILoginForm {
   email: string;
@@ -8,6 +12,7 @@ interface ILoginForm {
 
 export const Login = () => {
   const navigate = useNavigate();
+  const [loginError, setLoginError] = useState("");
   const {
     watch,
     register,
@@ -16,24 +21,25 @@ export const Login = () => {
   } = useForm<ILoginForm>();
 
   const onSubmit: SubmitHandler<ILoginForm> = async (values) => {
-    console.log(values);
     try {
-      const res = await fetch("http://localhost:3000/api/v1/auth/login", {
-        method: "POST",
-        body: JSON.stringify(values),
+      const { data } = await axiosInstance.post("/auth/login", values, {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
       });
-      if (res.ok) {
-        const data = await res.json();
-        console.log(data);
-        localStorage.setItem("token", data.token);
-        navigate("/");
-      }
+      console.log(data);
+      localStorage.setItem("token", data.token);
+      navigate("/");
+
+      setLoginError(data.message || "Login failed, try again!");
     } catch (error) {
-      console.log("error is here");
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          setLoginError(error.response.data.message);
+        } else if (error.request) {
+          setLoginError("Something went wrong! please try again");
+        }
+      }
       console.log(error);
     }
   };
@@ -64,7 +70,7 @@ export const Login = () => {
               Email
             </label>
             <p className="text-red-500 text-xs ml-2 mt-1">
-              {errors.email && <span>{errors.email.message}</span>}
+              {errors.email ? errors.email.message : loginError && loginError}
             </p>
           </div>
 
@@ -85,24 +91,17 @@ export const Login = () => {
               Password
             </label>
             <p className="text-red-500 text-xs ml-2 mt-1">
-              {errors.password && <span>{errors.password.message}</span>}
+              {errors.password
+                ? errors.password.message
+                : loginError && loginError}
             </p>
           </div>
 
           <div className="flex flex-col mt-12 ">
-            <button
-              type="submit"
-              className="bg-red-400 text-white h-10 rounded-2xl hover:bg-red-400/90 duration-150"
-            >
-              Login
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate("/register")}
-              className="border border-red-400 text-red-400 h-10 rounded-2xl hover:bg-red-100 duration-150 mt-4"
-            >
+            <Button type="gradient">Login</Button>
+            <Button type="dark" onClick={() => navigate("/register")}>
               Register
-            </button>
+            </Button>
           </div>
         </form>
       </div>

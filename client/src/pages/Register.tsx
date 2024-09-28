@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../axios";
+import { AxiosError } from "axios";
+import Button from "../components/Button";
 
 interface RegisterFormData {
   username: string;
@@ -29,24 +32,27 @@ export const Register = () => {
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (values) => {
     try {
-      const res = await fetch("http://localhost:3000/api/v1/auth/register", {
-        method: "POST",
-        body: JSON.stringify(values),
+      const { data } = await axiosInstance.post("/auth/register", values, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      if (res.ok) {
-        const data = await res.json();
-        console.log(data);
-        localStorage.setItem("token", data.token);
-        navigate("/");
-      } else if (res.status === 409) {
-        const data = await res.json();
-        setServerError(data);
-      }
+      console.log(data);
+      localStorage.setItem("token", data.token);
+      navigate("/");
     } catch (error) {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          setServerError(error.response.data);
+          console.log(error.response.data);
+        } else if (error.request) {
+          setServerError({
+            message: "Something went wrong! please try again",
+            duplicateField: "",
+          });
+          console.log(error.message);
+        }
+      }
     }
   };
 
@@ -137,19 +143,10 @@ export const Register = () => {
           </div>
 
           <div className="flex flex-col mt-12 ">
-            <button
-              type="submit"
-              className="bg-red-400 text-white h-10 rounded-2xl hover:bg-red-400/80 duration-150"
-            >
-              Register
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate("/login")}
-              className="border border-red-400 text-red-400 h-10 rounded-2xl hover:bg-red-100 duration-150 mt-4"
-            >
+            <Button type="gradient">Register</Button>
+            <Button type="dark" onClick={() => navigate("/login")}>
               Login
-            </button>
+            </Button>
           </div>
         </form>
       </div>
