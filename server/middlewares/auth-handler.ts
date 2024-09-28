@@ -7,7 +7,12 @@ const authHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  const { token } = req.cookies;
+  let { token } = req.cookies;
+  if (!token) {
+    const authHeader: string | undefined = req.headers.authorization;
+    token = authHeader?.split(" ")[1];
+    console.log(token);
+  }
   if (!process.env.MY_JWT_SECRET) {
     return res.status(500).json({ error: "JWT secret is not defined" });
   }

@@ -19,6 +19,7 @@ const errorHandler = (
       customMessage = `There is already an account with ${duplicateValue}`;
     }
     return res.status(409).json({
+      success: false,
       message: customMessage,
       duplicateField,
     });
