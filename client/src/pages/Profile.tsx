@@ -113,59 +113,42 @@ export default function Profile() {
                       <p className="text-sm mt-4">
                         Make sure this matches the name on your government ID.
                       </p>
-                      <div className="flex flex-col md:flex-row gap-2 mt-2">
-                        <label className="block w-full border-2 border-gray-400 focus-within:ring-1 ring-black rounded-lg duration-200 py-1 px-3">
-                          <div className="text-gray-500 text-sm">
-                            First name
-                            <span className="text-red-400">*</span>
-                          </div>
-                          <div>
-                            <input
-                              type="text"
-                              {...register("firstName", {
-                                required: {
-                                  value: true,
-                                  message: "First name can NOT be empty",
-                                },
-                                pattern: {
-                                  value: /^[A-Z]+$/i,
-                                  message:
-                                    "Name can NOT have symbols and numbers",
-                                },
-                              })}
-                              className="w-full focus:outline-none bg-transparent"
-                            />
-                          </div>
-                        </label>
-                        <label className="block w-full border-2 border-gray-400 focus-within:ring-1 ring-black rounded-lg duration-200 py-1 px-3">
-                          <div className="text-gray-500 text-sm">
-                            Last name
-                            <span className="text-red-400">*</span>
-                          </div>
-                          <div>
-                            <input
-                              type="text"
-                              {...register("lastName", {
-                                required: {
-                                  value: true,
-                                  message: "Last name can NOT be empty",
-                                },
-                                pattern: {
-                                  value: /^[A-Z]+$/i,
-                                  message:
-                                    "Name can NOT have symbols and numbers",
-                                },
-                              })}
-                              className="focus:outline-none bg-transparent"
-                            />
-                          </div>
-                        </label>
+                      <div className="flex flex-col md:flex-row gap-2">
+                        <Input
+                          className="w-1/2"
+                          name="firstName"
+                          label="First Name"
+                          error={errors.firstName}
+                          register={register}
+                          validation={{
+                            required: {
+                              value: true,
+                              message: "First name can NOT be empty",
+                            },
+                            pattern: {
+                              value: /^[A-Z]+$/i,
+                              message: "Name can NOT have symbols and numbers",
+                            },
+                          }}
+                        />
+                        <Input
+                          className="flex-1"
+                          name="lastName"
+                          label="Last Name"
+                          error={errors.lastName}
+                          register={register}
+                          validation={{
+                            required: {
+                              value: true,
+                              message: "Last name can NOT be empty",
+                            },
+                            pattern: {
+                              value: /^[A-Z]+$/i,
+                              message: "Name can NOT have symbols and numbers",
+                            },
+                          }}
+                        />
                       </div>
-                      {errors.firstName && (
-                        <span className="text-sm text-red-400">
-                          {errors.firstName.message}
-                        </span>
-                      )}
                     </li>
 
                     <li className="border-b border-gray-300 py-6">
@@ -173,35 +156,22 @@ export default function Profile() {
                       <p className="text-sm mt-4">
                         Use an address you’ll always have access to.
                       </p>
-                      <div className="flex gap-2 mt-2">
-                        <label className="block w-full border-2 border-gray-400 focus-within:ring-1 ring-black rounded-lg duration-200 py-1 px-3">
-                          <div className="text-gray-500 text-sm">
-                            Email address
-                            <span className="text-red-400">*</span>
-                          </div>
-                          <div>
-                            <input
-                              type="text"
-                              {...register("email", {
-                                required: {
-                                  value: true,
-                                  message: "Email name can NOT be empty",
-                                },
-                                pattern: {
-                                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                  message: "Provide a valid email!",
-                                },
-                              })}
-                              className="w-full focus:outline-none bg-transparent"
-                            />
-                          </div>
-                        </label>
-                      </div>
-                      {errors.email && (
-                        <span className="text-sm text-red-400">
-                          {errors.email.message}
-                        </span>
-                      )}
+                      <Input
+                        name="email"
+                        label="Email address"
+                        error={errors.email}
+                        register={register}
+                        validation={{
+                          required: {
+                            value: true,
+                            message: "Email name can NOT be empty",
+                          },
+                          pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "Provide a valid email!",
+                          },
+                        }}
+                      />
                     </li>
 
                     <li className="border-b border-gray-300 py-6">
@@ -211,62 +181,36 @@ export default function Profile() {
                         get in touch &#x29;. You can add other numbers and
                         choose how they’re used..
                       </p>
-                      <div className="flex gap-2 mt-2">
-                        <label className="block w-full border-2 border-gray-400 focus-within:ring-1 ring-black rounded-lg duration-200 py-1 px-3">
-                          <div className="text-gray-500 text-sm">
-                            Phone number
-                          </div>
-                          <div>
-                            <input
-                              type="text"
-                              {...register("phone", {
-                                pattern: {
-                                  value: /^\+93(78|73|79|77|72|74|70)\d{7}$/,
-                                  message: "Provide a valid phone number!",
-                                },
-                              })}
-                              className="w-full focus:outline-none bg-transparent"
-                            />
-                          </div>
-                        </label>
-                      </div>
-                      {errors.phone && (
-                        <span className="text-sm text-red-400">
-                          {errors.phone.message}
-                        </span>
-                      )}
+                      <Input
+                        name="phone"
+                        label="Phone number"
+                        error={errors.phone}
+                        register={register}
+                        validation={{
+                          pattern: {
+                            value: /^\+93(78|73|79|77|72|74|70)\d{7}$/,
+                            message: "Provide a valid phone number!",
+                          },
+                        }}
+                      />
                     </li>
                     <li className="border-b border-gray-300 py-6">
                       <p className="font-medium">Government ID number</p>
                       <p className="text-sm mt-4">
                         Make sure this matches the number on your government ID.
                       </p>
-                      <div className="flex gap-2 mt-2">
-                        <label className="block w-full border-2 border-gray-400 focus-within:ring-1 ring-black rounded-lg duration-200 py-1 px-3">
-                          <div className="text-gray-500 text-sm">
-                            Government ID number
-                            <span className="text-red-400">*</span>
-                          </div>
-                          <div>
-                            <input
-                              type="number"
-                              {...register("govId", {
-                                required: {
-                                  value: true,
-                                  message:
-                                    "Government ID number can NOT be empty",
-                                },
-                              })}
-                              className="w-full focus:outline-none bg-transparent"
-                            />
-                          </div>
-                        </label>
-                      </div>
-                      {errors.govId && (
-                        <span className="text-sm text-red-400">
-                          {errors.govId.message}
-                        </span>
-                      )}
+                      <Input
+                        name="govId"
+                        label="Government ID number"
+                        error={errors.govId}
+                        register={register}
+                        validation={{
+                          required: {
+                            value: true,
+                            message: "Government ID number can NOT be empty",
+                          },
+                        }}
+                      />
                     </li>
                   </ul>
                   <div className="flex item-center gap-2">

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
 import Button from "../components/Button";
 import { AxiosError } from "axios";
+import Input from "../components/Input";
 
 interface ILoginForm {
   email: string;
@@ -14,13 +15,13 @@ export const Login = () => {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState("");
   const {
-    watch,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ILoginForm>();
 
   const onSubmit: SubmitHandler<ILoginForm> = async (values) => {
+    console.log(values);
     try {
       const { data } = await axiosInstance.post("/auth/login", values, {
         headers: {
@@ -47,57 +48,43 @@ export const Login = () => {
   return (
     <section className="h-screen flex justify-center items-center">
       <div className="max-w-md w-[32rem] border-2 px-8 py-12 rounded-2xl shadow-xl">
-        <h1 className="text-center text-2xl font-bold">Login</h1>
+        <h1 className="text-center text-2xl font-bold">Login to <span className="text-gradient">100 Khana</span></h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col mt-8 relative">
-            <input
-              type="text"
-              {...register("email", {
+          <div className="flex flex-col mt-4 relative">
+            <Input
+              name="email"
+              label="Email"
+              register={register}
+              error={errors.email}
+              validation={{
                 required: "Email field is empty!",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   message: "Provide a valid email!",
                 },
-              })}
-              className="focus:ring-2 ring-red-400 border border-gray-300 rounded-2xl z-50 bg-transparent h-10 outline-none duration-150 indent-4 peer"
+              }}
             />
-            <label
-              htmlFor="email"
-              className={`absolute  left-4 text-gray-400 peer-focus:-top-7 duration-150 ${
-                watch("email") ? "-top-7" : "top-2"
-              }`}
-            >
-              Email
-            </label>
-            <p className="text-red-500 text-xs ml-2 mt-1">
-              {errors.email ? errors.email.message : loginError && loginError}
-            </p>
+            {!errors.email && loginError && (
+              <p className="error">{loginError}</p>
+            )}
           </div>
 
-          <div className="flex flex-col mt-8 relative">
-            <input
-              type="password"
-              {...register("password", {
+          <div className="flex flex-col mt-4 relative">
+            <Input
+              name="password"
+              label="Password"
+              register={register}
+              error={errors.password} // Only pass FieldError
+              validation={{
                 required: "Password field is empty!",
-              })}
-              className="focus:ring-2 ring-red-400 border border-gray-300 rounded-2xl z-50 bg-transparent h-10 outline-none duration-150 indent-4 peer"
+              }}
             />
-            <label
-              htmlFor="password"
-              className={`absolute  left-4 text-gray-400 peer-focus:-top-7 duration-150 ${
-                watch("password") ? "-top-7" : "top-2"
-              }`}
-            >
-              Password
-            </label>
-            <p className="text-red-500 text-xs ml-2 mt-1">
-              {errors.password
-                ? errors.password.message
-                : loginError && loginError}
-            </p>
+            {!errors.password && loginError && (
+              <p className="error">{loginError}</p>
+            )}
           </div>
 
-          <div className="flex flex-col mt-12 ">
+          <div className="flex flex-col mt-8">
             <Button type="gradient">Login</Button>
             <Button type="dark" onClick={() => navigate("/register")}>
               Register

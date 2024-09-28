@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
 import { AxiosError } from "axios";
 import Button from "../components/Button";
+import Input from "../components/Input";
 
 interface RegisterFormData {
   username: string;
@@ -24,7 +25,6 @@ export const Register = () => {
   });
 
   const {
-    watch,
     register,
     handleSubmit,
     formState: { errors },
@@ -59,90 +59,55 @@ export const Register = () => {
   return (
     <section className="h-screen flex justify-center items-center">
       <div className="max-w-md w-[32rem] border-2 px-8 py-12 rounded-2xl shadow-xl">
-        <h1 className="text-center text-2xl font-bold">Register</h1>
+        <h1 className="text-center text-2xl font-bold">Register to <span className="text-gradient">100 Khana</span></h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col mt-8 relative">
-            <input
-              type="text"
-              {...register("username", { required: "Username is required!" })}
-              className="focus:ring-2 ring-red-400 border border-gray-300 rounded-2xl z-50 bg-transparent h-10 outline-none duration-150 indent-4 peer"
+          <div className="flex flex-col relative mt-4">
+            <Input
+              name="username"
+              label="Username"
+              register={register}
+              validation={{ required: "Username is required!" }}
+              error={errors.username}
             />
-            <label
-              htmlFor="email"
-              className={`absolute  left-4 text-gray-400 peer-focus:-top-7 duration-150 ${
-                watch("username") ? "-top-7" : "top-2"
-              }`}
-            >
-              Username
-            </label>
-            {errors.username ? (
-              <p className="text-red-500 text-xs ml-2 mt-1">
-                <span>{errors.username.message}</span>
+            {!errors.username && serverError.duplicateField === "username" && (
+              <p className="error">
+                <span>{serverError.message}</span>
               </p>
-            ) : (
-              serverError.duplicateField === "username" && (
-                <p className="text-red-500 text-xs ml-2 mt-1">
-                  <span>{serverError.message}</span>
-                </p>
-              )
             )}
           </div>
 
-          <div className="flex flex-col mt-8 relative">
-            <input
-              type="text"
-              {...register("email", {
+          <div className="flex flex-col relative mt-4">
+            <Input
+              name="email"
+              label="Email"
+              register={register}
+              error={errors.email}
+              validation={{
                 required: "Email is required!",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   message: "Provide a valid email!",
                 },
-              })}
-              className="focus:ring-2 ring-red-400 border border-gray-300 rounded-2xl z-50 bg-transparent h-10 outline-none duration-150 indent-4 peer"
+              }}
             />
-            <label
-              htmlFor="email"
-              className={`absolute  left-4 text-gray-400 peer-focus:-top-7 duration-150 ${
-                watch("email") ? "-top-7" : "top-2"
-              }`}
-            >
-              Email
-            </label>
-            {errors.email ? (
-              <p className="text-red-500 text-xs ml-2 mt-1">
-                <span>{errors.email.message}</span>
-              </p>
-            ) : (
-              serverError.duplicateField === "email" && (
-                <p className="text-red-500 text-xs ml-2 mt-1">
-                  <span>{serverError.message}</span>
-                </p>
-              )
-            )}
-          </div>
-
-          <div className="flex flex-col mt-8 relative">
-            <input
-              type="text"
-              {...register("password", { required: "Password is required!" })}
-              className="focus:ring-2 ring-red-400 border border-gray-300 rounded-2xl z-50 bg-transparent h-10 outline-none duration-150 indent-4 peer"
-            />
-            <label
-              htmlFor="password"
-              className={`absolute  left-4 text-gray-400 peer-focus:-top-7 duration-150 ${
-                watch("password") ? "-top-7" : "top-2"
-              }`}
-            >
-              Password
-            </label>
-            {errors.password && (
-              <p className="text-red-500 text-xs ml-2 mt-1">
-                <span>{errors.password.message}</span>
+            {!errors.email && serverError.duplicateField === "email" && (
+              <p className="error">
+                <span>{serverError.message}</span>
               </p>
             )}
           </div>
 
-          <div className="flex flex-col mt-12 ">
+          <div className="flex flex-col relative mt-4">
+            <Input
+              name="password"
+              label="Password"
+              register={register}
+              error={errors.password}
+              validation={{ required: "Password is required!" }}
+            />
+          </div>
+
+          <div className="flex flex-col mt-8">
             <Button type="gradient">Register</Button>
             <Button type="dark" onClick={() => navigate("/login")}>
               Login
