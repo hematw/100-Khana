@@ -16,8 +16,9 @@ const port = process.env.PORT || 3000;
 // middlewares
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+app.use(express.static("public"))
 app.use(
   cors({
     credentials: true,
@@ -28,24 +29,23 @@ app.use(
 // Route handlers
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log("request body", req.body);
-  // res.send("hello world");
   next()
 });
 
-app.use(authHandler);
-// Auth route
+// Auth routes
 app.use("/api/v1/auth", authRouter);
-app.use(errorHandler);
+app.use(authHandler);
 
 // Profile routes
 app.use("/api/v1/profile", profileRouter);
+app.use(errorHandler);
 
 const start = async () => {
   try {
     if (process.env.MONGO_STRING) {
       await connectDb(process.env.MONGO_STRING);
     }
-    app.listen(3000, () => console.log(`server is running on port ${port}`));
+    app.listen(port, () => console.log(`server is running on port ${port}`));
   } catch (error) {}
 };
 start();
