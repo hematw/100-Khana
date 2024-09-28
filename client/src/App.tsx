@@ -5,10 +5,10 @@ import { Register } from "./pages/Register";
 import ProtectedPages from "./pages/ProtectedPages";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
+import NotFound from "./pages/NotFound";  
+import Logout from "./components/Logout";
 
 function App() {
-
   document.title = "100 Khana";
 
   return (
@@ -16,12 +16,13 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/" element={<ProtectedPages />}>
           <Route index element={<Home />} />
           <Route path="profile/me" element={<Profile />} />
           <Route path="profile/:id" element={<Profile />} />
         </Route>
-        <Route path="*" element={<NotFound/>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
