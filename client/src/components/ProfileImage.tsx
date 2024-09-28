@@ -1,7 +1,7 @@
 import React from "react";
 import { Camera, Upload } from "react-feather";
 
-interface SideBarProps {
+interface ProfileImageProps {
   image: string;
   username: string;
   isOnEdit: boolean;
@@ -10,19 +10,19 @@ interface SideBarProps {
 }
 
 export default function ProfileImage({
-  image,
+  image = "/profile-picture.png",
   username,
   isOnEdit,
   fileInputRef, // Accept the ref as a prop
   onChange,
-}: SideBarProps) {
+}: ProfileImageProps) {
   return (
     <div>
       <div className="w-60 h-60 relative">
         <img
           src={image}
           alt={`${username}'s profile`}
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-cover drop-shadow-2xl border-2 border-red-400 rounded-xl"
         />
         {isOnEdit && (
           <div>

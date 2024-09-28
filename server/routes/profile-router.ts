@@ -4,7 +4,7 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
   filename(req, file, cb) {
-    cb(null, Date.now() + "." + file.originalname.split(".")[1]);
+    cb(null, Date.now()+ "_" + file.originalname);
   },
   destination: function (req, file, cb) {
     cb(null, "./public/uploads/profiles");

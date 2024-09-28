@@ -22,6 +22,7 @@ export default function Profile() {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<IProfile>({});
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Added state to hold the selected file
   const fileInputRef = useRef<HTMLInputElement | null>(null); // Add type for fileInputRef
   const {
     register,
@@ -44,6 +45,12 @@ export default function Profile() {
     getProfile();
   }, [reset]);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]); // Store the selected file in state
+    }
+  };
+
   const onSubmit: SubmitHandler<IProfile> = async (values) => {
     setIsLoading(true);
     try {
@@ -54,11 +61,11 @@ export default function Profile() {
       formData.append("phone", values.phone || "");
       formData.append("govId", values.govId?.toString() || "");
 
-      // Append the file
-      if (fileInputRef.current?.files?.[0]) {
-        formData.append("profileImage", fileInputRef.current.files[0]);
-        console.log(fileInputRef.current.files[0]);
+      if (selectedFile) {
+        formData.append("profileImage", selectedFile);
+        console.log(selectedFile);
       }
+      console.log(formData.get("profileImage"));
       const { status, data } = await axiosInstance.patch(
         "/profile/update",
         formData,
@@ -69,12 +76,12 @@ export default function Profile() {
       if (status == 200) {
         setProfileData({ ...data, email: data?.userId?.email });
         reset({ ...data.profile, email: data?.userId?.email });
-        setEditMode(false); // Exit edit mode on success
+        setEditMode(false);
       }
       setIsLoading(false);
     } catch (error) {
       console.error(error);
-      setIsLoading(false); // Ensure loading state is turned off in case of an error
+      setIsLoading(false);
     }
   };
 
@@ -99,6 +106,7 @@ export default function Profile() {
                   username={profileData.firstName || "No name"}
                   isOnEdit={editMode}
                   fileInputRef={fileInputRef} // Attach the ref for file upload
+                  onChange={handleFileChange}
                 />
                 {/* <input
                   type="file"
@@ -233,7 +241,7 @@ export default function Profile() {
           ) : (
             <div className="flex gap-6">
               <ProfileImage
-                image="/profile-picture.png"
+                image={profileData?.profileImage || "/profile-picture.png"}
                 username={profileData.firstName || "No name"}
                 isOnEdit={editMode}
               />
