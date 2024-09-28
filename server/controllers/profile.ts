@@ -18,24 +18,28 @@ export const getProfile = asyncHandler(
 
 export const updateProfile = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
+    console.log("file is here", req.file);
     if (typeof req.user === "object") {
       let userId: JwtPayload = req.user?.id;
-      console.log(userId);
-      console.log(req.body);
       if (userId) {
         try {
           await User.findByIdAndUpdate(userId, {
             email: req.body.email,
           });
+          const profileImagePath =
+            `${req.protocol}://${req.hostname}:${process.env.PORT}` +
+            req.file?.destination
+              .replace("./public", "")
+              .concat("/" + req.file?.filename);
           const profile = await Profile.findOneAndUpdate(
             { userId },
-            { userId, ...req.body },
+            { userId, profileImage: profileImagePath, ...req.body },
             {
               new: true,
               runValidators: true,
               upsert: true,
             }
-          ).populate('userId');
+          ).populate("userId");
           if (!profile) {
             res
               .status(404)
