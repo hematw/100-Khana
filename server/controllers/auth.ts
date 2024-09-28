@@ -3,15 +3,14 @@ import User from "../models/User";
 import { json, Request, Response } from "express";
 
 const cookieOptions = {
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    secure: true,
-  };
+  maxAge: 7 * 24 * 60 * 60 * 1000, // seven days
+  httpOnly: true,
+  secure: true,
+};
 
+// Register route controller
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
-    console.log(req.body);
-
     const createdUser = await User.create(req.body);
     const token = await createdUser.generateToken();
     return res
@@ -25,6 +24,7 @@ export const registerUser = asyncHandler(
   }
 );
 
+// Login route controller
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const foundUser = await User.findOne({ email });
@@ -35,5 +35,13 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
       .cookie("token", token, cookieOptions)
       .json({ success: true, token });
   }
-  return res.status(401).json({ msg: "wrong credentials!" });
+  return res.status(401).json({ message: "Email or password was wrong!" });
+});
+
+// Logout route controller
+export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
+  return res
+    .status(200)
+    .clearCookie("token", cookieOptions)
+    .json({ success: true, message: "Logged out successfully" });
 });
