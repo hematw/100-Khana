@@ -1,4 +1,4 @@
-import { Globe, Menu, MessageSquare, Search, User } from "react-feather";
+import { Globe, LogOut, Menu, MessageSquare, Search, User } from "react-feather";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 
@@ -67,6 +67,15 @@ export default function Header() {
                 <MessageSquare />
               </span>
               <span>Messages</span>
+            </Link>
+            <Link
+              to="/logout"
+              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 duration-150"
+            >
+              <span>
+                <LogOut />
+              </span>
+              <span>Logout</span>
             </Link>
           </Dropdown>
         </div>

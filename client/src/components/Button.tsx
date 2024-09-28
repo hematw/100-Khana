@@ -4,7 +4,7 @@ interface ButtonProps {
   className?: string;
   type: "dark" | "gradient" | "simple";
   children: React.ReactNode;
-  handleClick: () => void;
+  onClick?: () => void;
   icon?: React.ReactNode;
   disabled?: boolean;
 }
@@ -19,7 +19,7 @@ export default function Button({
   className,
   type,
   children,
-  handleClick,
+  onClick,
   icon,
   disabled,
 }: ButtonProps) {
@@ -27,7 +27,7 @@ export default function Button({
     <button
       disabled={disabled}
       type="submit"
-      onClick={handleClick}
+      onClick={onClick}
       className={`inline-flex hover:opacity-80 place-content-center gap-2 duration-150 text-white py-2 px-4 min-w-32 text-lg mt-4 rounded-lg ${className} ${buttonStyles[type]}`}
     >
       {icon ? icon : ""}
