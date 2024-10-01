@@ -8,7 +8,7 @@ export default function ProtectedPages() {
   return (
     <>
       <Header />
-      <main className="mt-16">
+      <main className="min-h-[540px]">
         {token ? <Outlet /> : <Navigate to={"/login"} />}
       </main>
       <Footer />

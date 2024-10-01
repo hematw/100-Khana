@@ -1,4 +1,5 @@
-import { Facebook, GitHub, Linkedin, Twitter } from "react-feather";
+import { FaLinkedinIn, FaXTwitter, FaGithub } from "react-icons/fa6";
+import { FaFacebookF } from "react-icons/fa";
 
 export const Footer = () => {
   return (
@@ -19,25 +20,25 @@ export const Footer = () => {
                 href="https://www.x.com/_hematw"
                 className="bg-blue-400 text-white shadow-lg h-10 w-10 flex items-center justify-center rounded-full mr-2"
               >
-                <Twitter />
+                <FaXTwitter />
               </a>
               <a
                 href="https://www.facebook.com/hemat.w"
                 className="bg-blue-500 text-white shadow-lg h-10 w-10 flex items-center justify-center rounded-full mr-2"
               >
-                <Facebook />
+                <FaFacebookF />
               </a>
               <a
                 href="https://www.linkedin.com/in/hematw"
                 className="bg-sky-600 text-white shadow-lg h-10 w-10 flex items-center justify-center rounded-full mr-2"
               >
-                <Linkedin />
+                <FaLinkedinIn />
               </a>
               <a
                 href="https://www.github.com/hematw"
                 className="bg-gray-800 text-white shadow-lg h-10 w-10 flex items-center justify-center rounded-full mr-2"
               >
-                <GitHub />
+                <FaGithub />
               </a>
             </div>
           </div>

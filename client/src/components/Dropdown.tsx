@@ -1,5 +1,5 @@
 import { FocusEventHandler, ReactNode, useState, useRef } from "react";
-import { ChevronDown } from "react-feather";
+import { FaChevronDown } from "react-icons/fa6";
 
 interface DropdownProps {
   children: React.ReactNode;
@@ -36,7 +36,7 @@ export default function Dropdown({
         onClick={() => setIsOpen((prev) => !prev)}
         onBlur={handleBlur}
       >
-        {icon || <ChevronDown />}
+        {icon || <FaChevronDown />}
         {buttonText}
       </button>
 

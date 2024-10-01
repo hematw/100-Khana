@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronRight, ChevronLeft } from "react-feather";
+import { FaChevronRight,FaChevronLeft  } from "react-icons/fa6";
 
 type carouselProps = {
     images: string[],
@@ -32,13 +32,13 @@ const Carousel = ({ className = '', images }: carouselProps) => {
           onClick={goPrev}
           className="p-2 h-8 w-8 flex items-center bg-white rounded-full "
         >
-          <ChevronLeft />
+          <FaChevronLeft />
         </button>
         <button
           onClick={goNext}
           className="p-2 h-8 w-8 flex items-center bg-white rounded-full "
         >
-          <ChevronRight />
+          <FaChevronRight />
         </button>
       </div>
       <div className="w-full ">

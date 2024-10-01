@@ -1,5 +1,5 @@
 import React from "react";
-import { Camera, Upload } from "react-feather";
+import { FaCamera, FaUpload } from "react-icons/fa";
 
 interface ProfileImageProps {
   image: string;
@@ -28,7 +28,7 @@ export default function ProfileImage({
           <div>
             <label className="inline-flex justify-center items-center bg-black/50 text-white absolute bottom-0 right-0 w-10 h-10 rounded-ss-2xl rounded-ee-lg cursor-pointer">
               <span>
-                <Upload />
+                <FaUpload />
               </span>
               <input
                 type="file"
@@ -40,7 +40,7 @@ export default function ProfileImage({
             </label>
             <label className="inline-flex justify-center items-center bg-black/50 text-white absolute bottom-0 left-0 w-10 h-10 rounded-se-2xl rounded-es-lg cursor-pointer">
               <span>
-                <Camera />
+                <FaCamera />
               </span>
               <input
                 type="file"

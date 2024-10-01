@@ -17,7 +17,7 @@ type ServerError = {
   duplicateField: string;
 };
 
-export const Register = () => {
+const Register = () => {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState<ServerError>({
     message: "",
@@ -118,3 +118,5 @@ export const Register = () => {
     </section>
   );
 };
+
+export default Register

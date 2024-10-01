@@ -11,7 +11,7 @@ interface ILoginForm {
   password: string;
 }
 
-export const Login = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState("");
   const {
@@ -48,7 +48,9 @@ export const Login = () => {
   return (
     <section className="h-screen flex justify-center items-center">
       <div className="max-w-md w-[32rem] border-2 px-8 py-12 rounded-2xl shadow-xl">
-        <h1 className="text-center text-2xl font-bold">Login to <span className="text-gradient">100 Khana</span></h1>
+        <h1 className="text-center text-2xl font-bold">
+          Login to <span className="text-gradient">100 Khana</span>
+        </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col mt-4 relative">
             <Input
@@ -95,3 +97,5 @@ export const Login = () => {
     </section>
   );
 };
+
+export default Login;
