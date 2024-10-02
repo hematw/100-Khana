@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import { AuthenticatedRequest } from "../types";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { AuthenticatedRequest } from "../types/AuthenticatedRequest";
 
 const authHandler = (
   req: AuthenticatedRequest,
@@ -20,7 +20,7 @@ const authHandler = (
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.MY_JWT_SECRET);
-      req.user = decoded;
+      req.user = <JwtPayload>decoded;
     } catch (err) {
       return res.status(401).json({ error: "Invalid or expired token" });
     }

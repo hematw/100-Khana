@@ -8,6 +8,7 @@ import errorHandler from "./middlewares/error-handler";
 import authHandler from "./middlewares/auth-handler";
 import cookieParser from "cookie-parser";
 import profileRouter from "./routes/profile-router";
+import homeRouter from "./routes/home-router";
 
 dotEnvConfig();
 const app = express();
@@ -38,6 +39,8 @@ app.use(authHandler);
 
 // Profile routes
 app.use("/api/v1/profile", profileRouter);
+
+app.use("/api/v1/homes", homeRouter)
 app.use(errorHandler);
 
 const start = async () => {

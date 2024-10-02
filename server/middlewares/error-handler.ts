@@ -23,7 +23,8 @@ const errorHandler = (
       message: customMessage,
       duplicateField,
     });
-  }
+  } 
+  // else if(err instanceof )
   res.status(400).json({ err });
 };
 
