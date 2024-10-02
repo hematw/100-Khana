@@ -1,7 +1,7 @@
 import { Response } from "express";
 import asyncHandler from "../middlewares/async-handler";
 import Profile from "../models/Profile";
-import { AuthenticatedRequest } from "../types";
+import { AuthenticatedRequest } from "../types/AuthenticatedRequest";
 import { JwtPayload } from "jsonwebtoken";
 import User from "../models/User";
 
